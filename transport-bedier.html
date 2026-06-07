@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transports – Agence Bédier</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:wght@300;400;500&display=swap');
+:root {
+  --rouge: #C8102E;
+  --noir: #0D0D0D;
+  --gris-fonce: #1A1A1A;
+  --blanc: #F5F5F5;
+  --gris-clair: #999;
+  --m7: #E2231A;
+  --m14: #62259D;
+  --t3a: #82C341;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--noir);
+  color: var(--blanc);
+  font-family: 'Barlow', sans-serif;
+  min-height: 100vh;
+  overflow: hidden;
+}
+</style>
+</head>
+<body>
+<header style="background:#C8102E;padding:12px 28px;display:flex;align-items:center;justify-content:space-between;">
+  <div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.6rem;letter-spacing:0.08em;text-transform:uppercase;">🚇 Transports en commun</div>
+    <div style="font-size:0.75rem;font-weight:300;opacity:0.85;letter-spacing:0.12em;text-transform:uppercase;margin-top:2px;">Agence Sud – Bédier · Paris 13ᵉ</div>
+  </div>
+  <div style="text-align:right;">
+    <div id="clock" style="font-family:'Barlow Condensed',sans-serif;font-size:2.2rem;font-weight:700;">--:--</div>
+    <div id="date-display" style="font-size:0.72rem;font-weight:300;opacity:0.85;letter-spacing:0.1em;text-transform:capitalize;margin-top:2px;">--</div>
+  </div>
+</header>
+
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px;height:calc(100vh - 70px);padding:3px;background:#111;">
+
+  <!-- MÉTRO 7 -->
+  <div style="background:#1A1A1A;border-left:3px solid #E2231A;border-radius:4px;display:flex;flex-direction:column;">
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid #E2231A44;">
+      <div style="background:#E2231A;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem;color:white;">7</div>
+      <div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:700;text-transform:uppercase;">Métro — Ligne 7</div>
+        <div style="font-size:0.72rem;font-weight:300;color:#999;text-transform:uppercase;margin-top:3px;">📍 Porte d'Ivry</div>
+      </div>
+      <div id="dot-m7" style="width:8px;height:8px;border-radius:50%;background:#FFC107;margin-left:auto;"></div>
+    </div>
+    <div id="deps-m7" style="flex:1;padding:6px 0;overflow:hidden;">
+      <div style="display:flex;align-items:center;justify-content:center;height:100%;color:#999;font-size:0.75rem;">Chargement…</div>
+    </div>
+    <div style="padding:5px 16px;background:#ffffff06;font-size:0.62rem;color:#555;">Source : Île-de-France Mobilités</div>
+  </div>
+
+  <!-- MÉTRO 14 -->
+  <div style="background:#1A1A1A;border-left:3px solid #62259D;border-radius:4px;display:flex;flex-direction:column;">
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid #62259D44;">
+      <div style="background:#62259D;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem;color:white;">14</div>
+      <div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:700;text-transform:uppercase;">Métro — Ligne 14</div>
+        <div style="font-size:0.72rem;font-weight:300;color:#999;text-transform:uppercase;margin-top:3px;">📍 Olympiades</div>
+      </div>
+      <div id="dot-m14" style="width:8px;height:8px;border-radius:50%;background:#FFC107;margin-left:auto;"></div>
+    </div>
+    <div id="deps-m14" style="flex:1;padding:6px 0;overflow:hidden;">
+      <div style="display:flex;align-items:center;justify-content:center;height:100%;color:#999;font-size:0.75rem;">Chargement…</div>
+    </div>
+    <div style="padding:5px 16px;background:#ffffff06;font-size:0.62rem;color:#555;">Source : Île-de-France Mobilités</div>
+  </div>
+
+  <!-- TRAMWAY T3A -->
+  <div style="background:#1A1A1A;border-left:3px solid #82C341;border-radius:4px;display:flex;flex-direction:column;">
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid #82C34144;">
+      <div style="background:#82C341;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem;color:#1a1a1a;">T3a</div>
+      <div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:700;text-transform:uppercase;">Tramway — T3a</div>
+        <div style="font-size:0.72rem;font-weight:300;color:#999;text-transform:uppercase;margin-top:3px;">📍 Porte d'Ivry</div>
+      </div>
+      <div id="dot-t3a" style="width:8px;height:8px;border-radius:50%;background:#FFC107;margin-left:auto;"></div>
+    </div>
+    <div id="deps-t3a" style="flex:1;padding:6px 0;overflow:hidden;">
+      <div style="display:flex;align-items:center;justify-content:center;height:100%;color:#999;font-size:0.75rem;">Chargement…</div>
+    </div>
+    <div style="padding:5px 16px;background:#ffffff06;font-size:0.62rem;color:#555;">Source : Île-de-France Mobilités</div>
+  </div>
+
+</div>
+script>
+const API_KEY = 'yH57jAwXiW7ZWrlkU1Bez3FoigwNoPwS';
+
+const LINES = {
+  'm7': { stopId: 'STIF:StopPoint:Q:22372:', directions: ['La Courneuve','Mairie d\'Ivry'] },
+  'm14': { stopId: 'STIF:StopPoint:Q:21954:', directions: ['Saint-Denis Pleyel','Orly Aéroport'] },
+  't3a': { stopId: 'STIF:StopPoint:Q:24133:', directions: ['Pont du Garigliano','Porte de Vincennes'] }
+};
+
+function updateClock() {
+  const now = new Date();
+  const hh = String(now.getHours()).padStart(2,'0');
+  const mm = String(now.getMinutes()).padStart(2,'0');
+  document.getElementById('clock').textContent = hh+':'+mm;
+  const jours = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+  const mois = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+  document.getElementById('date-display').textContent = jours[now.getDay()]+' '+now.getDate()+' '+mois[now.getMonth()]+' '+now.getFullYear();
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+async function fetchLine(key) {
+  const cfg = LINES[key];
+  const url = 'https://prim.iledefrance-mobilites.fr/marketplace/stop-monitoring?MonitoringRef='+encodeURIComponent(cfg.stopId);
+  try {
+    ​const resp = await fetch(url + '&apikey=' + API_KEY);
+    const data = await resp.json();
+    const visits = data?.Siri?.ServiceDelivery?.StopMonitoringDelivery?.[0]?.MonitoredStopVisit || [];
+    const now = new Date();
+    let html = '';
+    visits.slice(0,5).forEach(v => {
+      const journey = v?.MonitoredVehicleJourney;
+      const dest = journey?.DestinationName?.[0]?.value || '—';
+      const depTime = new Date(journey?.MonitoredCall?.ExpectedDepartureTime || journey?.MonitoredCall?.AimedDepartureTime);
+      const wait = Math.max(0, Math.round((depTime - now) / 60000));
+      const label = wait === 0 ? 'à l\'arrêt' : wait+' min';
+      const color = wait <= 1 ? '#FF6B35' : '#F5F5F5';
+      html += '<div style="display:flex;align-items:center;padding:7px 16px;border-bottom:1px solid #ffffff06;"><div style="flex:1;font-size:0.88rem;color:#ddd;">'+dest+'</div><div style="font-family:Barlow Condensed,sans-serif;font-size:1.15rem;font-weight:600;color:'+color+';">'+label+'</div></div>';
+    });
+    document.getElementById('deps-'+key).innerHTML = html || '<div style="text-align:center;color:#999;padding:20px;">Aucun départ</div>';
+    document.getElementById('dot-'+key).style.background = '#4CAF50';
+  } catch(e) {
+    document.getElementById('dot-'+key).style.background = '#f44336';
+  }
+}
+
+function refreshAll() {
+  Object.keys(LINES).forEach(k => fetchLine(k));
+}
+refreshAll();
+setInterval(refreshAll, 60000);
+</script>
+</body>
+</html>
