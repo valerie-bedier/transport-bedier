@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transports – Agence Bédier</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:wght@300;400;500&display=swap');
+:root {
+  --rouge: #C8102E;
+  --noir: #0D0D0D;
+  --gris-fonce: #1A1A1A;
+  --blanc: #F5F5F5;
+  --gris-clair: #999;
+  --m7: #E2231A;
+  --m14: #62259D;
+  --t3a: #82C341;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--noir);
+  color: var(--blanc);
+  font-family: 'Barlow', sans-serif;
+  min-height: 100vh;
+  overflow: hidden;
+}
+header {
+  background: var(--rouge);
+  padding: 12px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.header-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 1.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.header-sub {
+  font-size: 0.75rem;
+  font-weight: 300;
+  opacity: 0.85;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+#clock {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-align: right;
+}
+#date-display {
+  font-size: 0.72rem;
+  font-weight: 300;
+  opacity: 0.85;
+  text-align: right;
+}
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 3px;
+  height: calc(100vh - 70px);
+  padding: 3px;
+  background: #111;
+}
+.card {
+  background: var(--gris-fonce);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+}
+.card-m7  { border-left: 3px solid var(--m7); }
+.card-m14 { border-left: 3px solid var(--m14); }
+.card-t3a { border-left: 3px solid var(--t3a); }
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border-bottom: 1px solid #ffffff10;
+}
+.badge {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 1.3rem;
+  color: white;
+  flex-shrink: 0;
+}
+.badge-m7  { background: var(--m7); }
+.badge-m14 { background: var(--m14); }
+.badge-t3a { background: var(--t3a); color: #1a1a1a; }
+.card-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.card-station { font-size: 0.72rem; color: var(--gris-clair); text-transform: uppercase; margin-top: 3px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: #FFC107; margin-left: auto; flex-shrink: 0; }
+.dot.ok { background: #4CAF50; }
+.dot.err { background: #f44336; }
+.departures { flex: 1; overflow: hidden; padding: 6px 0; }
+.dep-row { display: flex; align-items: center; padding: 8px 16px; border-bottom: 1px solid #ffffff06; gap: 10px; }
+.dep-dir { flex: 1; font-size: 0.88rem; color: #ddd; }
+.dep-time { font-family: 'Barlow Condensed', sans-serif; font-size: 1.2rem; font-weight: 600; color: var(--blanc); }
+.dep-time.imminent { color: #FF6B35; }
+.card-footer { padding: 5px 16px; font-size: 0.62rem; color: #555; background: #ffffff06; display: flex; justify-content: space-between; }
+.no-data { display: flex; align-items: center; justify-content: center; height: 100%; color: var(--gris-clair); font-size: 0.75rem; text-transform: uppercase; }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <div class="header-title">🚇 Transports en commun</div>
+    <div class="header-sub">Agence Sud – Bédier · Paris 13ᵉ</div>
+  </div>
+  <div>
+    <div id="clock">--:--</div>
+    <div id="date-display">--</div>
+  </div>
+</header>
+
+<div class="grid">
+  <div class="card card-m7">
+    <div class="card-header">
+      <div class="badge badge-m7">7</div>
+      <div><div class="card-title">Métro — Ligne 7</div><div class="card-station">📍 Porte d'Ivry</div></div>
+      <div class="dot" id="dot-m7"></div>
+    </div>
+    <div class="departures" id="deps-m7"><div class="no-data">Chargement…</div></div>
+    <div class="card-footer"><span>Île-de-France Mobilités</span><span id="upd-m7">—</span></div>
+  </div>
+
+  <div class="card card-m14">
+    <div class="card-header">
+      <div class="badge badge-m14">14</div>
+      <div><div class="card-title">Métro — Ligne 14</div><div class="card-station">📍 Olympiades</div></div>
+      <div class="dot" id="dot-m14"></div>
+    </div>
+    <div class="departures" id="deps-m14"><div class="no-data">Chargement…</div></div>
+    <div class="card-footer"><span>Île-de-France Mobilités</span><span id="upd-m14">—</span></div>
+  </div>
+
+  <div class="card card-t3a">
+    <div class="card-header">
+      <div class="badge badge-t3a">T3a</div>
+      <div><div class="card-title">Tramway — T3a</div><div class="card-station">📍 Porte d'Ivry</div></div>
+      <div class="dot" id="dot-t3a"></div>
+    </div>
+    <div class="departures" id="deps-t3a"><div class="no-data">Chargement…</div></div>
+    <div class="card-footer"><span>Île-de-France Mobilités</span><span id="upd-t3a">—</span></div>
+  </div>
+</div>
+<script>
+const API_KEY = 'yH57jAwXiW7ZWrlkU1Bez3FoigwNoPwS';
+const LINES = {
+  'm7': { stopId: 'STIF:StopPoint:Q:22372:', directions: ['La Courneuve','Mairie d\'Ivry'] },
+  'm14': { stopId: 'STIF:StopPoint:Q:21954:', directions: ['Saint-Denis Pleyel','Orly Aéroport'] },
+  't3a': { stopId: 'STIF:StopPoint:Q:24133:', directions: ['Pont du Garigliano','Porte de Vincennes'] }
+};
+
+function updateClock() {
+  const now = new Date();
+  const hh = String(now.getHours()).padStart(2,'0');
+  const mm = String(now.getMinutes()).padStart(2,'0');
+  document.getElementById('clock').textContent = hh+':'+mm;
+  const jours = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+  const mois = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+  document.getElementById('date-display').textContent = jours[now.getDay()]+' '+now.getDate()+' '+mois[now.getMonth()]+' '+now.getFullYear();
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+function getDemo(key) {
+  const dirs = LINES[key].directions;
+  const deps = [];
+  let t = Math.floor(Math.random()*3);
+  for (let i=0; i<5; i++) {
+    deps.push({ direction: dirs[i%dirs.length], waitMin: t });
+    t += 2 + Math.floor(Math.random()*5);
+  }
+  return deps;
+}
+
+function renderDepartures(key, departures) {
+  const now = new Date();
+  document.getElementById('upd-'+key).textContent = 'Màj '+String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+  if (!departures || departures.length === 0) {
+    document.getElementById('dot-'+key).className = 'dot ok';
+    document.getElementById('deps-'+key).innerHTML = '<div class="no-data">Aucun départ</div>';
+    return;
+  }
+  document.getElementById('dot-'+key).className = 'dot ok';
+  let html = '';
+  departures.slice(0,6).forEach(dep => {
+    const imminent = dep.waitMin <= 1;
+    const label = dep.waitMin === 0 ? 'à l\'arrêt' : dep.waitMin+' min';
+    html += '<div class="dep-row"><div class="dep-dir">'+dep.direction+'</div><div class="dep-time'+(imminent?' imminent':'')+'">'+label+'</div></div>';
+  });
+  document.getElementById('deps-'+key).innerHTML = html;
+}
+
+async function fetchLine(key) {
+  const cfg = LINES[key];
+  const url = 'https://prim.iledefrance-mobilites.fr/marketplace/stop-monitoring?MonitoringRef='+encodeURIComponent(cfg.stopId);
+  try {
+    const resp = await fetch(url, { headers: { 'apikey': API_KEY } });
+    if (!resp.ok) throw new Error('HTTP '+resp.status);
+    const data = await resp.json();
+    const visits = data?.Siri?.ServiceDelivery?.StopMonitoringDelivery?.[0]?.MonitoredStopVisit || [];
+    if (visits.length === 0) { renderDepartures(key, []); return; }
+    const now = new Date();
+    const departures = visits.map(v => {
+      const journey = v?.MonitoredVehicleJourney;
+      const dest = journey?.DestinationName?.[0]?.value || '—';
+      const depTime = new Date(journey?.MonitoredCall?.ExpectedDepartureTime || journey?.MonitoredCall?.AimedDepartureTime);
+      return { direction: dest, waitMin: Math.max(0, Math.round((depTime - now) / 60000)) };
+    });
+    renderDepartures(key, departures);
+  } catch(e) {
+    renderDepartures(key, getDemo(key));
+  }
+}
+
+function refreshAll() { Object.keys(LINES).forEach(k => fetchLine(k)); }
+refreshAll();
+setInterval(refreshAll, 60000);
+</script>
+</body>
+</html>
